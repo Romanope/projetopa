@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">
+
+    <ImageView
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:id="@+id/imageView"
+        app:srcCompat="@drawable/iconemusica" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:orientation="vertical"
+        android:padding="5dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/txt_nome_musica"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome da musica"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/txt_nome_autor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Autor da musica"
+            android:textSize="17sp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
