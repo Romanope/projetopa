@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.progavancada.appprojeto.model.Contato;
 import com.progavancada.appprojeto.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -66,16 +67,14 @@ public class ContatosAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-
         holder.nomeContato.setText(contato.getNome());
         holder.emailContato.setText(contato.getEmail());
 
         if (contato.getUrlFoto() != null) {
-            String urlFoto = contato.getUrlFoto();
-            Bitmap bitmap = BitmapFactory.decodeFile(urlFoto);
-            //Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 100, 100, true);
-            holder.imagemContato.setImageBitmap(bitmap);
-            holder.imagemContato.setScaleType(ImageView.ScaleType.FIT_XY);
+            Picasso.with(mContext)
+                    .load(contato.getUrlFoto())
+                    .resize(64, 64)
+                    .into(holder.imagemContato);
         }
 
         return convertView;

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.progavancada.appprojeto.adapter.ContatosAdapter;
 import com.progavancada.appprojeto.model.Contato;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +64,11 @@ public class ContatosActivity extends AppCompatActivity {
             c.setEmail("emailqualquer@email.com.br");
             mContatos.add(c);
         }
+        mContatos.get(1).setUrlFoto("http://i.imgur.com/DvpvklR.png");
+        mContatos.get(2).setUrlFoto("https://pbs.twimg.com/profile_images/609439993094770690/MqfzEbtj.jpg");
+        mContatos.get(3).setUrlFoto("http://decorandocasas.com.br/wp-content/uploads/2014/03/fachadas-de-casas-bonitas4.jpg");
+        mContatos.get(4).setUrlFoto("http://www.fatosdesconhecidos.com.br/wp-content/uploads/2015/05/bart.gif");
+        mContatos.get(5).setUrlFoto("http://www.maxiauto.com.br/assets/img/site/home-banner-carro.png");
     }
 
     @Override
