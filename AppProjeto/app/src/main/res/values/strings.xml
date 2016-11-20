@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">AppProjeto</string>
+    <string name="title_activity_contatos">ContatosActivity</string>
+    <string name="title_activity_musicas">MusicasActivity</string>
+    <string name="title_activity_videos">VideosActivity</string>
+</resources>
