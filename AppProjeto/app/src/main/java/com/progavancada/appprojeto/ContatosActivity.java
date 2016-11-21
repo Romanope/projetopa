@@ -1,5 +1,6 @@
 package com.progavancada.appprojeto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.progavancada.appprojeto.adapter.ContatosAdapter;
+import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
 import com.squareup.picasso.Picasso;
 
@@ -37,7 +39,8 @@ public class ContatosActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Botao para adicionar um novo contato
+                Intent intent = new Intent(ContatosActivity.this, CadastroContato.class);
+                startActivity(intent);
             }
         });
 
@@ -49,9 +52,20 @@ public class ContatosActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupListView();
+    }
+
     private void setupListView() {
+
         mContatos = new ArrayList<>();
-        criaUnsContatos(10);
+
+        ContatoFacade facade = new ContatoFacade(this);
+        mContatos = facade.buscaContatos();
+
+        //criaUnsContatos(10);
 
         mContatosAdapter = new ContatosAdapter(this, mContatos);
         mListContatos.setAdapter(mContatosAdapter);
@@ -79,9 +93,9 @@ public class ContatosActivity extends AppCompatActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 Contato contato = (Contato) mListContatos.getItemAtPosition(info.position);
-                mContatos.remove(contato);
-                Toast.makeText(ContatosActivity.this, "Contato deletado", Toast.LENGTH_LONG);
-                setupListView();
+                //mContatos.remove(contato);
+                //Toast.makeText(ContatosActivity.this, "Contato deletado", Toast.LENGTH_LONG).show();
+                //setupListView();
                 return false;
             }
         });
