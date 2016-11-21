@@ -1,5 +1,8 @@
 package br.com.pa.downloaderpa;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 /**
  * Created by Romano on 20/11/2016.
  */
@@ -17,12 +20,18 @@ public class Download {
 
     private IListenerDownload listenerDownload;
 
-    public Download(String url, IListenerDownload listener) {
+    private ImageView imageView;
+
+    private Context context;
+
+    public Download(String url, ImageView imageView, Context context) {
         this.url = url;
         this.pendente = true;
         this.emExecucao = false;
         this.finalizado = false;
-        this.listenerDownload = listener;
+        this.listenerDownload = null;
+        this.imageView = imageView;
+        this.context = context;
     }
 
     public String getUrl() {
@@ -72,5 +81,21 @@ public class Download {
 
     public void setListenerDownload(IListenerDownload listenerDownload) {
         this.listenerDownload = listenerDownload;
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
+
+    public void setImageView(ImageView imageView) {
+        this.imageView = imageView;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(Context context) {
+        this.context = context;
     }
 }
