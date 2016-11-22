@@ -1,5 +1,8 @@
 package br.com.pa.downloaderpa;
 
+import android.content.Context;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
 
 /**
@@ -23,12 +26,17 @@ public class DownloadManager {
 
     private static boolean isAtivo = false;
 
-    public static void downloadImage(String url, IListenerDownload listenerDownload) {
+    public static void downloadImage(String url, ImageView imageView, Context context) {
         if (!isAtivo) {
-            executeDownloads();
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    executeDownloads();
+                }
+            }).start();
             isAtivo = true;
         }
-        Download download = new Download(url, listenerDownload);
+        Download download = new Download(url, imageView, context);
         downloadsPendentes.add(download);
     }
 
@@ -43,7 +51,13 @@ public class DownloadManager {
             currentDownload = getNextDownload();
             if (currentDownload != null && currentDownload.isPendente() && !currentDownload.isEmExecucao() && !currentDownload.isFinalizado()) {
                 for (DownloadExecutor executor: executors) {
-                    if (executor.isDownloadTermited()) {
+                    if (executor.getState() == Thread.State.NEW) {
+                        executor.setDownloadTermited(false);
+                        currentDownload.setPendente(false);
+                        currentDownload.setEmExecucao(true);
+                        executor.setDownload(currentDownload);
+                        executor.start();
+                    } else if (executor.isDownloadTermited()) {
                         if (executor.getDownload() != null) {
                             Download dFinish = executor.getDownload();
                             dFinish.setEmExecucao(false);
@@ -58,9 +72,9 @@ public class DownloadManager {
                         break;
                     }
                 }
-            } else {
-                verifyDownloads();
             }
+
+            verifyDownloads();
 
             try {
                 Thread.sleep(2000);

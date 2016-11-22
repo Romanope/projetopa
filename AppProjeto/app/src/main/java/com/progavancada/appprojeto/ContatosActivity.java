@@ -1,5 +1,6 @@
 package com.progavancada.appprojeto;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -12,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.progavancada.appprojeto.adapter.ContatosAdapter;
+import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
 
 import java.util.ArrayList;
@@ -36,11 +38,13 @@ public class ContatosActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Botao para adicionar um novo contato
+                Intent intent = new Intent(ContatosActivity.this, CadastroContatoActivity.class);
+                startActivity(intent);
             }
         });
 
         mListContatos = (ListView) findViewById(R.id.list_contatos);
+        mContatos = new ArrayList<>();
 
         setupListView();
 
@@ -48,33 +52,33 @@ public class ContatosActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupListView();
+    }
+
     private void setupListView() {
-        mContatos = new ArrayList<>();
-        criaUnsContatos(10);
+
+        ContatoFacade facade = new ContatoFacade(this);
+        mContatos = facade.buscaContatos();
 
         mContatosAdapter = new ContatosAdapter(this, mContatos);
         mListContatos.setAdapter(mContatosAdapter);
     }
 
-    private void criaUnsContatos(int qnt) {
-        for (int i = 0; i < qnt; i++) {
-            Contato c = new Contato();
-            c.setNome("Nome Qualquer " + i);
-            c.setEmail("emailqualquer@email.com.br");
-            mContatos.add(c);
-        }
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
-        MenuItem deletar = menu.add("Deletar");
+        MenuItem deletar = menu.add("Apagar");
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 Contato contato = (Contato) mListContatos.getItemAtPosition(info.position);
-                mContatos.remove(contato);
-                Toast.makeText(ContatosActivity.this, "Contato deletado", Toast.LENGTH_LONG);
+                ContatoFacade facade = new ContatoFacade(ContatosActivity.this);
+                facade.remove(contato);
+                facade.fecharConexao();
+                Toast.makeText(ContatosActivity.this, "Contato removido com sucesso", Toast.LENGTH_LONG).show();
                 setupListView();
                 return false;
             }

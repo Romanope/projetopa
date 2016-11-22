@@ -1,6 +1,7 @@
 package br.com.pa.downloaderpa;
 
 import android.graphics.Bitmap;
+import android.widget.ImageView;
 
 /**
  * Created by Romano on 20/11/2016.
@@ -18,8 +19,7 @@ public class DownloadExecutor extends Thread {
 
         while (!deadThread) {
             if (!downloadTermited) {
-                Bitmap image = Util.downloader(download.getUrl());
-                download.getListenerDownload().finish(image);
+                new Util().downloader(download.getUrl(), download.getImageView(), download.getContext());
                 downloadTermited = true;
             }
         }
