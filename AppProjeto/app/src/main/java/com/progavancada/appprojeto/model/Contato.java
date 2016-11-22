@@ -11,6 +11,14 @@ public class Contato {
     private String email;
     private String urlFoto;
 
+    public Contato(String nome, String email, String urlFoto) {
+        this.nome = nome;
+        this.email = email;
+        this.urlFoto = urlFoto;
+    }
+
+    public Contato() {}
+
     public long getId() {
         return id;
     }

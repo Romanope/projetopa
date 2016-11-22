@@ -3,4 +3,12 @@
     <string name="title_activity_contatos">ContatosActivity</string>
     <string name="title_activity_musicas">MusicasActivity</string>
     <string name="title_activity_videos">VideosActivity</string>
+    <string name="nome_contato">Nome</string>
+    <string name="email_contato">E-mail</string>
+    <string name="tirar_uma_foto">Tirar uma foto</string>
+    <string name="url_foto">URL de uma foto</string>
+    <string name="salvar">Salvar contato</string>
+    <string name="preview">Preview:</string>
+    <string name="carregar">Carregar</string>
+    <string name="ou">ou</string>
 </resources>
