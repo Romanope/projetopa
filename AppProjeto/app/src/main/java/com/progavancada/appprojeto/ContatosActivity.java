@@ -15,7 +15,6 @@ import android.widget.Toast;
 import com.progavancada.appprojeto.adapter.ContatosAdapter;
 import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,7 @@ public class ContatosActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ContatosActivity.this, CadastroContato.class);
+                Intent intent = new Intent(ContatosActivity.this, CadastroContatoActivity.class);
                 startActivity(intent);
             }
         });

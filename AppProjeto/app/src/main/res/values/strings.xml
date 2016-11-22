@@ -9,6 +9,6 @@
     <string name="url_foto">URL de uma foto</string>
     <string name="salvar">Salvar contato</string>
     <string name="preview">Preview:</string>
-    <string name="carregar">Carregar</string>
+    <string name="carregar">Preview</string>
     <string name="ou">ou</string>
 </resources>
