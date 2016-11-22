@@ -47,12 +47,13 @@ public class ContatoDAO extends SQLiteOpenHelper implements IContatoDAO {
         contentValues.put("email", contato.getEmail());
         contentValues.put("url_foto", contato.getUrlFoto());
         writableDatabase.insert("contato", null, contentValues);
-        close();
     }
 
     @Override
     public void remove(Contato contato) {
-
+        String sql = "delete from contato where id=" + contato.getId();
+        SQLiteDatabase writableDatabase = getWritableDatabase();
+        writableDatabase.execSQL(sql);
     }
 
     @Override
@@ -82,5 +83,10 @@ public class ContatoDAO extends SQLiteOpenHelper implements IContatoDAO {
         cursor.close();
 
         return contatos;
+    }
+
+    @Override
+    public void fecharConexao() {
+        close();
     }
 }

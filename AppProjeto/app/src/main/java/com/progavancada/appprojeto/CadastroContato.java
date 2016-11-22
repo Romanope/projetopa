@@ -5,18 +5,22 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.progavancada.appprojeto.dao.ContatoDAO;
 import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
+import com.squareup.picasso.Picasso;
 
 public class CadastroContato extends AppCompatActivity {
 
     private EditText mCampoNome;
     private EditText mCampoEmail;
     private EditText mCampoURLFoto;
+    private ImageView mPreviewFoto;
     private Button mButtonSalvar;
+    private Button mButtonCarregarFoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +30,9 @@ public class CadastroContato extends AppCompatActivity {
         mCampoNome = (EditText) findViewById(R.id.edt_nome_contato);
         mCampoEmail = (EditText) findViewById(R.id.edt_email_contato);
         mCampoURLFoto = (EditText) findViewById(R.id.edt_url_foto);
+        mPreviewFoto = (ImageView) findViewById(R.id.preview_foto);
         mButtonSalvar = (Button) findViewById(R.id.btn_salvar_contato);
+        mButtonCarregarFoto = (Button) findViewById(R.id.btn_carregar_foto);
 
         mButtonSalvar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,8 +45,17 @@ public class CadastroContato extends AppCompatActivity {
 
                 ContatoFacade contatoFacade = new ContatoFacade(CadastroContato.this);
                 contatoFacade.insere(contato);
+                contatoFacade.fecharConexao();
+                
                 Toast.makeText(CadastroContato.this, "Contato salvo!", Toast.LENGTH_LONG).show();
 
+            }
+        });
+
+        mButtonCarregarFoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Picasso.with(CadastroContato.this).load(mCampoURLFoto.getText().toString()).resize(64, 64).into(mPreviewFoto);
             }
         });
 

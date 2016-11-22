@@ -45,6 +45,7 @@ public class ContatosActivity extends AppCompatActivity {
         });
 
         mListContatos = (ListView) findViewById(R.id.list_contatos);
+        mContatos = new ArrayList<>();
 
         setupListView();
 
@@ -60,42 +61,26 @@ public class ContatosActivity extends AppCompatActivity {
 
     private void setupListView() {
 
-        mContatos = new ArrayList<>();
-
         ContatoFacade facade = new ContatoFacade(this);
         mContatos = facade.buscaContatos();
-
-        //criaUnsContatos(10);
 
         mContatosAdapter = new ContatosAdapter(this, mContatos);
         mListContatos.setAdapter(mContatosAdapter);
     }
 
-    private void criaUnsContatos(int qnt) {
-        for (int i = 0; i < qnt; i++) {
-            Contato c = new Contato();
-            c.setNome("Nome Qualquer " + i);
-            c.setEmail("emailqualquer@email.com.br");
-            mContatos.add(c);
-        }
-        mContatos.get(1).setUrlFoto("http://i.imgur.com/DvpvklR.png");
-        mContatos.get(2).setUrlFoto("https://pbs.twimg.com/profile_images/609439993094770690/MqfzEbtj.jpg");
-        mContatos.get(3).setUrlFoto("http://decorandocasas.com.br/wp-content/uploads/2014/03/fachadas-de-casas-bonitas4.jpg");
-        mContatos.get(4).setUrlFoto("http://www.fatosdesconhecidos.com.br/wp-content/uploads/2015/05/bart.gif");
-        mContatos.get(5).setUrlFoto("http://www.maxiauto.com.br/assets/img/site/home-banner-carro.png");
-    }
-
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, final ContextMenu.ContextMenuInfo menuInfo) {
-        MenuItem deletar = menu.add("Deletar");
+        MenuItem deletar = menu.add("Apagar");
         deletar.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
                 Contato contato = (Contato) mListContatos.getItemAtPosition(info.position);
-                //mContatos.remove(contato);
-                //Toast.makeText(ContatosActivity.this, "Contato deletado", Toast.LENGTH_LONG).show();
-                //setupListView();
+                ContatoFacade facade = new ContatoFacade(ContatosActivity.this);
+                facade.remove(contato);
+                facade.fecharConexao();
+                Toast.makeText(ContatosActivity.this, "Contato removido com sucesso", Toast.LENGTH_LONG).show();
+                setupListView();
                 return false;
             }
         });

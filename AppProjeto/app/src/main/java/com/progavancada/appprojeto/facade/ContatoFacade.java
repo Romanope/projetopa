@@ -42,4 +42,9 @@ public class ContatoFacade implements IContatoDAO {
     public List<Contato> buscaContatos() {
         return contatoDAO.buscaContatos();
     }
+
+    @Override
+    public void fecharConexao() {
+        contatoDAO.fecharConexao();
+    }
 }

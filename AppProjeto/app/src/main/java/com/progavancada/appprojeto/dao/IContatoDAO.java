@@ -14,5 +14,6 @@ public interface IContatoDAO {
     void remove(Contato contato);
     void altera(Contato contato);
     List<Contato> buscaContatos();
+    void fecharConexao();
 
 }
