@@ -3,15 +3,18 @@ package com.progavancada.appprojeto.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.progavancada.appprojeto.model.Contato;
 import com.progavancada.appprojeto.R;
+import com.progavancada.appprojeto.util.ImageUtil;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -65,17 +68,18 @@ public class ContatosAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
+            holder.imagemContato.setImageResource(R.drawable.semfoto);
         }
 
         holder.nomeContato.setText(contato.getNome());
         holder.emailContato.setText(contato.getEmail());
 
-        if (contato.getUrlFoto() != null) {
-            Picasso.with(mContext)
-                    .load(contato.getUrlFoto())
-                    .resize(64, 64)
-                    .into(holder.imagemContato);
+        try{
+            ImageUtil.carregarImagem(mContext, contato.getUrlFoto(), 64, 64, holder.imagemContato);
+        } catch (IllegalArgumentException e) {
+            //Log.e("LOG", e.getMessage());
         }
+
 
         return convertView;
     }
