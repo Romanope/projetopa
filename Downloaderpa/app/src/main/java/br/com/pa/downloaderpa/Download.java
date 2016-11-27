@@ -1,5 +1,6 @@
 package br.com.pa.downloaderpa;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -7,6 +8,8 @@ import android.widget.ImageView;
  * Created by Romano on 20/11/2016.
  */
 public class Download {
+
+    private int id;
 
     private String url;
 
@@ -97,5 +100,13 @@ public class Download {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
