@@ -1,95 +1,96 @@
 package br.com.pa.downloaderpa;
 
+import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import br.com.pa.downloaderpa.cache.DataBaseManager;
 
 /**
  * Created by Romano on 20/11/2016.
  */
 public class DownloadManager {
 
-    private static ArrayList<Download> downloadsPendentes = new ArrayList<Download>();
-
-    private static ArrayList<Download> downloadsEmExecucao = new ArrayList<Download>();
-
-    private static ArrayList<Download> downloadsFinalizados = new ArrayList<Download>();
-
+    protected static ArrayList<Download> downloadsPendentes = new ArrayList<Download>();
     private static ArrayList<DownloadExecutor> executors = new ArrayList<DownloadExecutor>();
-
     private static boolean poolStarted;
-
     private static boolean deadDownloadManager;
+    private static Map<Integer, ImageView> views = new HashMap<Integer, ImageView>();
+    private static int downloadSequence = 0;
+    private static boolean disponivel;
 
-    private static Download currentDownload;
+    private static DownloadManager downloadManager;
 
-    private static boolean isAtivo = false;
+    private static IObserverDownload observerDownload = new IObserverDownload() {
+        @Override
+        public void downloadFinish(final Download download, final String path) {
 
-    public static void downloadImage(String url, ImageView imageView, Context context) {
-        if (!isAtivo) {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    executeDownloads();
-                }
-            }).start();
-            isAtivo = true;
-        }
-        Download download = new Download(url, imageView, context);
-        downloadsPendentes.add(download);
-    }
+            final ImageView v = views.get(download.getId());
+            if (v != null) {
+                Thread thread = new Thread() {
+                    @Override
+                    public void run() {
 
-    public static void executeDownloads() {
-
-        while (!isDeadDownloadManager()) {
-            //Start pool of threads case first of execution
-            if (!poolStarted) {
-                startPoolThreads(3);
-            }
-
-            currentDownload = getNextDownload();
-            if (currentDownload != null && currentDownload.isPendente() && !currentDownload.isEmExecucao() && !currentDownload.isFinalizado()) {
-                for (DownloadExecutor executor: executors) {
-                    if (executor.getState() == Thread.State.NEW) {
-                        executor.setDownloadTermited(false);
-                        currentDownload.setPendente(false);
-                        currentDownload.setEmExecucao(true);
-                        executor.setDownload(currentDownload);
-                        executor.start();
-                    } else if (executor.isDownloadTermited()) {
-                        if (executor.getDownload() != null) {
-                            Download dFinish = executor.getDownload();
-                            dFinish.setEmExecucao(false);
-                            dFinish.setFinalizado(true);
-                            executor.setDownload(null);
-                            downloadsFinalizados.add(dFinish);
-                        }
-                        executor.setDownloadTermited(false);
-                        currentDownload.setPendente(false);
-                        currentDownload.setEmExecucao(true);
-                        executor.setDownload(currentDownload);
-                        break;
+                        Activity a = (Activity) download.getContext();
+                        a.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                v.setImageURI(Uri.parse(path));
+                            }
+                        });
                     }
-                }
+                };
+                thread.start();
+                views.remove(download.getUrl());
             }
+        }
+    };
 
-            verifyDownloads();
+    public synchronized void downloadImage(String url, ImageView imageView, Context context) {
 
+        if (downloadManager == null) {
+            downloadManager = new DownloadManager();
+        }
+
+        while (disponivel) {
             try {
-                Thread.sleep(2000);
+                wait();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        if (url == null || url.trim().length() == 0) {
+            throw new IllegalArgumentException("url is required");
+        }
+
+        Download download = new Download(url, imageView, context);
+        download.setId(downloadSequence++);
+        downloadsPendentes.add(download);
+
+        if (imageView != null) {
+            views.put(download.getId(), imageView);
+        }
+
+        if (!poolStarted) {
+            startPoolThreads();
+        }
+        disponivel = true;
+        notifyAll();
     }
 
-    private static void startPoolThreads(int numberThreads) {
-        if (numberThreads > 0) {
-            for (int i = 0; i < numberThreads; i++) {
+    private static void startPoolThreads() {
+        int numbersOfThreads = Util.getNumberOfCores();
+        if (numbersOfThreads > 0) {
+            for (int i = 0; i < numbersOfThreads; i++) {
                 DownloadExecutor executor = new DownloadExecutor();
                 executor.setName("Thread " + i);
-                executor.setDownloadTermited(true);
+                executor.setObserverDownload(observerDownload);
+                executor.start();
                 executors.add(executor);
             }
 
@@ -98,6 +99,7 @@ public class DownloadManager {
     }
 
     public static boolean isDeadDownloadManager() {
+
         return deadDownloadManager;
     }
 
@@ -105,30 +107,30 @@ public class DownloadManager {
         DownloadManager.deadDownloadManager = deadDownloadManager;
     }
 
-    private static Download getNextDownload() {
+    public synchronized Download getDownload() {
 
-        Download down = null;
-        if (downloadsPendentes.size() > 0) {
-            down = downloadsPendentes.iterator().next();
-            downloadsPendentes.remove(down);
-        }
-        return down;
-    }
-
-    private static void verifyDownloads() {
-
-        for (DownloadExecutor e: executors) {
-            if (e != null) {
-                if (e.isDownloadTermited()) {
-                    if (e.getDownload() != null) {
-                        Download d = e.getDownload();
-                        d.setFinalizado(true);
-                        d.setEmExecucao(false);
-                        downloadsFinalizados.add(d);
-                        e.setDownload(null);
-                    }
-                }
+        Download download = null;
+        while (!disponivel) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
+        if (downloadsPendentes.size() > 0) {
+            download = downloadsPendentes.iterator().next();
+            downloadsPendentes.remove(download);
+        }
+        disponivel = false;
+        notifyAll();
+        return download;
+    }
+
+    public static DownloadManager getInstance() {
+        if (downloadManager == null) {
+            downloadManager = new DownloadManager();
+        }
+
+        return downloadManager;
     }
 }
