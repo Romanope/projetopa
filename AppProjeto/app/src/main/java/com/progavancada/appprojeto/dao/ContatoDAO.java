@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.progavancada.appprojeto.model.Contato;
 
@@ -81,6 +82,8 @@ public class ContatoDAO extends SQLiteOpenHelper implements IContatoDAO {
         }
 
         cursor.close();
+
+        Log.i("CONTATOS", contatos.toString());
 
         return contatos;
     }

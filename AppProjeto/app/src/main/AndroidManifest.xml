@@ -35,6 +35,7 @@
             android:name=".BaixarMusicas"
             android:label="@string/title_activity_baixar_musicas"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+
     </application>
 
 </manifest>
