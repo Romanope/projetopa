@@ -1,6 +1,5 @@
-package br.com.pa.downloaderpa;
+package br.com.pa.downloaderpa.downloader;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -13,12 +12,6 @@ public class Download {
 
     private String url;
 
-    private boolean pendente;
-
-    private boolean emExecucao;
-
-    private boolean finalizado;
-
     private int position;
 
     private IListenerDownload listenerDownload;
@@ -27,11 +20,8 @@ public class Download {
 
     private Context context;
 
-    public Download(String url, ImageView imageView, Context context) {
+    protected Download(String url, ImageView imageView, Context context) {
         this.url = url;
-        this.pendente = true;
-        this.emExecucao = false;
-        this.finalizado = false;
         this.listenerDownload = null;
         this.imageView = imageView;
         this.context = context;
@@ -44,30 +34,6 @@ public class Download {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public boolean isPendente() {
-        return pendente;
-    }
-
-    public void setPendente(boolean pendente) {
-        this.pendente = pendente;
-    }
-
-    public boolean isEmExecucao() {
-        return emExecucao;
-    }
-
-    public void setEmExecucao(boolean emExecucao) {
-        this.emExecucao = emExecucao;
-    }
-
-    public boolean isFinalizado() {
-        return finalizado;
-    }
-
-    public void setFinalizado(boolean finalizado) {
-        this.finalizado = finalizado;
     }
 
     public int getPosition() {

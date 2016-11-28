@@ -1,4 +1,4 @@
-package br.com.pa.downloaderpa;
+package br.com.pa.downloaderpa.downloader;
 
 import android.graphics.Bitmap;
 

@@ -1,4 +1,4 @@
-package br.com.pa.downloaderpa;
+package br.com.pa.downloaderpa.util;
 
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
@@ -28,47 +28,20 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import br.com.pa.downloaderpa.util.Constantes;
+import br.com.pa.downloaderpa.util.LogWapper;
+
 /**
  * Created by Romano on 20/11/2016.
  */
 public class Util {
 
-    private static Map<Long, ImageView> views = new HashMap<Long, ImageView>();
-
-    private static final String[] IMAGE_EXTENSIONS = {"png", "jpg", "jpeg", "bmp"};
-    private static final String[] AUDIO_EXTENSIONS = {"mp3", "wma", "aac"};
-    private static final String[] VIDEO_EXTENSIONS = {"avi", "mpeg", "mov", "mkv"};
-    private static final String VIDEO_DIRECTORY = "downloadpa/videos";
-    private static final String IMAGE_DIRECTORY = "downloadpa/pictures";
-    private static final String AUDIO_DIRECTORY = "downloadpa/audios";
-    public static final String DOWNLOAD_COMPLETED = "downloadCompleted";
-    public static final String EXTRA_PATH_FILE = "filePath";
-
-    private Context context;
-
-    public void downloader(String url, ImageView view, Context context) {
-
-        this.context = context;
-        IntentFilter intentFilter = new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-        context.registerReceiver(downloadReceiver, intentFilter);
-
-        String nameFile = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
-        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-        request.setTitle(nameFile);
-        request.setDescription("Wait, please.");
-
-        request.allowScanningByMediaScanner();
-//        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_ONLY_COMPLETION);
-
-        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, nameFile);
-        DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-        long id = manager.enqueue(request);
-        if (view != null) {
-            views.put(id, view);
-        }
-    }
-
-    public static String downloaderWithConnector(String url) {
+    /**
+     * Método responsável por realizar o download do arquivo
+     * @param url
+     * @return diretório onde o arquivo baixado foi salvo
+     */
+    public static String downloader(String url) {
 
         try {
 
@@ -104,49 +77,53 @@ public class Util {
             return fileDownloaded.getPath();
 
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            LogWapper.e(e.getMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            LogWapper.e(e.getMessage());
         }
 
-        return "";
+        return null;
     }
 
-
-    private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (DownloadManager.ACTION_DOWNLOAD_COMPLETE.equals(intent.getAction())) {
-                long id = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-                //verifyDownloadStatus(id, context);
-            }
-        }
-    };
-
+    /**
+     * Método responsável por obter o diretório
+     * onde o arquivo será salvo.
+     * @param url
+     * @return diretório onde o arquivo será salvo
+     */
     public static String getDirectory(String url) {
 
         String fileExtension = getTypeFile(url);
         if (isAudio(fileExtension)) {
-            return AUDIO_DIRECTORY;
+            return Constantes.AUDIO_DIRECTORY;
         } else if (isImage(fileExtension)) {
-            return IMAGE_DIRECTORY;
+            return Constantes.IMAGE_DIRECTORY;
         } else if (isVideo(fileExtension)) {
-            return VIDEO_DIRECTORY;
+            return Constantes.VIDEO_DIRECTORY;
         } else {
             throw new IllegalArgumentException();
         }
     }
 
+    /**
+     * Método responsável por obter a extensão do arquivo
+     * @param url
+     * @return extensão do arquivo
+     */
     public static String getTypeFile(String url) {
 
-        return MimeTypeMap.getFileExtensionFromUrl(url);
+        return url.substring(url.lastIndexOf('.')+1);
     }
 
+    /**
+     * Método responsável verificar se o arquivo é uma imagem
+     * @param extension
+     * @return Verdadeiro, caso seja uma imagem, do contrário false.
+     */
     public static boolean isImage(String extension) {
 
-        for (int i = 0; i < IMAGE_EXTENSIONS.length; i++) {
-            if (IMAGE_EXTENSIONS[i].equalsIgnoreCase(extension)) {
+        for (int i = 0; i < Constantes.IMAGE_EXTENSIONS.length; i++) {
+            if (Constantes.IMAGE_EXTENSIONS[i].equalsIgnoreCase(extension)) {
                 return true;
             }
         }
@@ -154,10 +131,15 @@ public class Util {
         return false;
     }
 
+    /**
+     * Verifica se o arquivo é um áudio
+     * @param extension
+     * @return verdadeiro, caso o arquivo seja um áudio
+     */
     public static boolean isAudio(String extension) {
 
-        for (int i = 0; i < AUDIO_EXTENSIONS.length; i++) {
-            if (AUDIO_EXTENSIONS[i].equalsIgnoreCase(extension)) {
+        for (int i = 0; i < Constantes.AUDIO_EXTENSIONS.length; i++) {
+            if (Constantes.AUDIO_EXTENSIONS[i].equalsIgnoreCase(extension)) {
                 return true;
             }
         }
@@ -165,10 +147,15 @@ public class Util {
         return false;
     }
 
+    /**
+     * Método responsável por verificar se o arquivo é vídeo
+     * @param extension
+     * @return verdadeiro, caso arquivo seja vídeo
+     */
     public static boolean isVideo(String extension) {
 
-        for (int i = 0; i < VIDEO_EXTENSIONS.length; i++) {
-            if (VIDEO_EXTENSIONS[i].equalsIgnoreCase(extension)) {
+        for (int i = 0; i < Constantes.VIDEO_EXTENSIONS.length; i++) {
+            if (Constantes.VIDEO_EXTENSIONS[i].equalsIgnoreCase(extension)) {
                 return true;
             }
         }
@@ -176,6 +163,13 @@ public class Util {
         return false;
     }
 
+    /**
+     * Método responsável por verificar se a
+     * string é vazia ou nula
+     * @param str
+     * @return verdadeiro, caso a string seja vazia ou nula, caso não,
+     * retorna falso
+     */
     public static boolean isNullOrEmpty(String str) {
         if (str == null || str.trim().length() == 0) {
             return true;
@@ -183,10 +177,19 @@ public class Util {
         return false;
     }
 
+    /**
+     * Método responsável por obter o nome do arquivo
+     * @param url
+     * @return nome do arquivo
+     */
     public static String getNameFile(String url) {
-        return URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
+        return url.substring(url.lastIndexOf("/")+1);
     }
 
+    /**
+     * Método responsável por obter o número de núcleos do processador
+     * @return número de núcloes do processador
+     */
     public static int getNumberOfCores() {
         if(Build.VERSION.SDK_INT >= 17) {
             return Runtime.getRuntime().availableProcessors();
@@ -197,11 +200,6 @@ public class Util {
         }
     }
 
-    /**
-     * Gets the number of cores available in this device, across all processors.
-     * Requires: Ability to peruse the filesystem at "/sys/devices/system/cpu"
-     * @return The number of cores, or 1 if failed to get result
-     */
     private  static int getNumCoresOldPhones() {
         class CpuFilter implements FileFilter {
             @Override
@@ -222,5 +220,41 @@ public class Util {
         } catch (Exception e) {
             return 1;
         }
+    }
+
+    /**
+     * Método responsável por verificar se a url
+     * é uma url válida para realizar o download
+     * @param url
+     * @return retorna verdadeiro, caso a url seja válida, caso não,
+     * retorna falso.
+     */
+    public static boolean urlIsValid(String url) {
+
+        boolean retorno = false;
+
+        String name = getNameFile(url);
+
+        if (name == null) {
+            throw new IllegalArgumentException("Url is not valid");
+        }
+
+        if (name.indexOf('.') == 0) {
+            throw new IllegalArgumentException("Url is not valid");
+        }
+
+        String extension = "";
+        if (name.indexOf('.') > 0) {
+            extension = name.substring(name.lastIndexOf('.') + 1);
+        }
+
+        if (isImage(extension))
+            retorno = true;
+        else if (isVideo(extension))
+            retorno = true;
+        else if (isAudio(extension))
+            retorno = true;
+
+        return retorno;
     }
 }

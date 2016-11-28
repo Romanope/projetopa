@@ -1,18 +1,17 @@
-package br.com.pa.downloaderpa;
+package br.com.pa.downloaderpa.downloader;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.ImageView;
 
 import br.com.pa.downloaderpa.cache.DataBaseManager;
+import br.com.pa.downloaderpa.util.Constantes;
+import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.Util;
 
 /**
  * Created by Romano on 20/11/2016.
  */
-public class DownloadExecutor extends Thread {
+public class DownloadExecutor implements Runnable {
 
     private Download download;
 
@@ -20,41 +19,35 @@ public class DownloadExecutor extends Thread {
 
     private IObserverDownload observerDownload;
 
+    private String mNameRunnable;
+
     @Override
     public void run() {
 
         while (!deadThread) {
-            download = DownloadManager.getInstance().getDownload();
+            download = Downloaderpa.getInstance().getDownload();
             if (download != null) {
 
                 String path = "";
 
                 path = consultarPath(Util.getNameFile(download.getUrl()), download.getContext());
                 if (path == null || path.trim().length() == 0) {
-                    path = Util.downloaderWithConnector(download.getUrl());
-                    addCache(Util.getNameFile(download.getUrl()), path, download.getContext());
+                    path = Util.downloader(download.getUrl());
+                    if (path != null) {
+                        addCache(Util.getNameFile(download.getUrl()), path, download.getContext());
+                    }
                 }
 
-                Intent i = new Intent(Util.DOWNLOAD_COMPLETED);
-                i.putExtra(Util.EXTRA_PATH_FILE, path);
+                Intent i = new Intent(Constantes.DOWNLOAD_COMPLETED);
+                i.putExtra(Constantes.EXTRA_PATH_FILE, path);
                 download.getContext().sendBroadcast(i);
 
                 if (Util.isImage(Util.getTypeFile(download.getUrl()))) {
                     observerDownload.downloadFinish(download, path);
                 }
-                Log.i("Downloadpa", this.getName() + " executou o download " + download.getUrl());
+                LogWapper.i(mNameRunnable + " executou o download " + download.getUrl());
             }
         }
-    }
-
-    public Download getDownload() {
-
-        return download;
-    }
-
-    public void setDownload(Download download) {
-
-        this.download = download;
     }
 
     public boolean isDeadThread() {
@@ -67,14 +60,15 @@ public class DownloadExecutor extends Thread {
         this.deadThread = deadThread;
     }
 
-    public IObserverDownload getObserverDownload() {
+    protected IObserverDownload getObserverDownload() {
         return observerDownload;
     }
 
-    public void setObserverDownload(IObserverDownload observerDownload) {
+    protected void setObserverDownload(IObserverDownload observerDownload) {
         this.observerDownload = observerDownload;
     }
 
+    //Verifica se o arquivo está em cache
     private String consultarPath(String midiaName, Context context) {
         String retorno = "";
         if (midiaName != null) {
@@ -84,8 +78,13 @@ public class DownloadExecutor extends Thread {
         return retorno;
     }
 
+    //Adiciona referência do arquivo em cache.
     private void addCache(String midiaName, String midiaPath, Context context) {
         DataBaseManager manager = new DataBaseManager(context);
         manager.addCache(midiaName, midiaPath);
+    }
+
+    public void setNameRunnable(String name) {
+        this.mNameRunnable = name;
     }
 }
