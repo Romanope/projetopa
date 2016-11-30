@@ -1,7 +1,6 @@
 package br.com.pa.downloaderpa.downloader;
 
 import android.app.Activity;
-import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -37,7 +36,7 @@ public class Downloaderpa {
      * @param url
      * @param imageView
      */
-    public synchronized void download(String url, ImageView imageView) {
+    public synchronized void download(String url, ImageView imageView, IListenerDownloadCompleted listener) {
 
         validateUrl(url);
 
@@ -51,6 +50,9 @@ public class Downloaderpa {
         }
 
         Download download = new Download(url, imageView, mContext);
+        if (listener != null) {
+            download.setListener(listener);
+        }
         download.setId(mDownloadSequence++);
         mDownloadsPendentes.add(download);
 
@@ -72,7 +74,6 @@ public class Downloaderpa {
             for (int i = 0; i < numbersOfThreads; i++) {
                 DownloadExecutor executor = new DownloadExecutor();
                 executor.setNameRunnable("Thread " + i);
-                executor.setObserverDownload(observerDownload);
                 Thread t = new Thread(executor);
                 t.start();
             }
@@ -140,9 +141,32 @@ public class Downloaderpa {
         return downloaderpa;
     }
 
-    private IObserverDownload observerDownload = new IObserverDownload() {
-        @Override
-        public void downloadFinish(final Download download, final String path) {
+//    private IListenerDownloadCompleted observerDownload = new IListenerDownloadCompleted() {
+//        @Override
+//        public void downloadFinish(final Download download, final String path) {
+//
+//        final ImageView v = mViews.get(download.getId());
+//        if (v != null) {
+//            Thread thread = new Thread() {
+//                @Override
+//                public void run() {
+//
+//                    Activity a = (Activity) download.getContext();
+//                    a.runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            v.setImageURI(Uri.parse(path));
+//                        }
+//                    });
+//                }
+//            };
+//            thread.start();
+//            mViews.remove(download.getUrl());
+//        }
+//        }
+//    };
+
+    protected void refreshingView(final Download download, final String path) {
 
         final ImageView v = mViews.get(download.getId());
         if (v != null) {
@@ -162,8 +186,7 @@ public class Downloaderpa {
             thread.start();
             mViews.remove(download.getUrl());
         }
-        }
-    };
+    }
 
     public boolean isCacheUpdated() {
         return cacheUpdated;

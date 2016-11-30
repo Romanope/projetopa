@@ -14,15 +14,14 @@ public class Download {
 
     private int position;
 
-    private IListenerDownload listenerDownload;
-
     private ImageView imageView;
 
     private Context context;
 
+    private IListenerDownloadCompleted listener;
+
     protected Download(String url, ImageView imageView, Context context) {
         this.url = url;
-        this.listenerDownload = null;
         this.imageView = imageView;
         this.context = context;
     }
@@ -42,14 +41,6 @@ public class Download {
 
     public void setPosition(int position) {
         this.position = position;
-    }
-
-    public IListenerDownload getListenerDownload() {
-        return listenerDownload;
-    }
-
-    public void setListenerDownload(IListenerDownload listenerDownload) {
-        this.listenerDownload = listenerDownload;
     }
 
     public ImageView getImageView() {
@@ -74,5 +65,13 @@ public class Download {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public IListenerDownloadCompleted getListener() {
+        return listener;
+    }
+
+    public void setListener(IListenerDownloadCompleted listener) {
+        this.listener = listener;
     }
 }
