@@ -18,9 +18,9 @@ public class DownloadExecutor implements Runnable {
 
     private boolean deadThread;
 
-    private IListenerDownloadCompleted observerDownload;
-
     private String mNameRunnable;
+
+    private static DownloadFile[] downloaders;
 
     @Override
     public void run() {
@@ -33,6 +33,10 @@ public class DownloadExecutor implements Runnable {
                     Downloaderpa.getInstance().setCacheUpdated(true);
                 }
 
+                if (downloaders == null) {
+                    setDownloaders();
+                }
+
                 //Verify if exists in cache
                 String path = consultarPath(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), download.getContext());
                 if (Util.isNullOrEmpty(path)) {
@@ -40,7 +44,7 @@ public class DownloadExecutor implements Runnable {
                     path = Util.toSearchFile(download.getUrl());
                     if (Util.isNullOrEmpty(path)) {
                         //Case not found in file system, execute the download
-                        path = Util.downloader(download.getUrl());
+                        path = this.getDownloader(download.getUrl()).downloader(download.getUrl());
                     }
 
                     //Caches the file reference
@@ -64,14 +68,6 @@ public class DownloadExecutor implements Runnable {
     public void setDeadThread(boolean deadThread) {
 
         this.deadThread = deadThread;
-    }
-
-    protected IListenerDownloadCompleted getObserverDownload() {
-        return observerDownload;
-    }
-
-    protected void setObserverDownload(IListenerDownloadCompleted observerDownload) {
-        this.observerDownload = observerDownload;
     }
 
     //Verifica se o arquivo está em cache
@@ -100,8 +96,30 @@ public class DownloadExecutor implements Runnable {
         }
 
         if (download.getListener() != null) {
-            download.getListener().completed(path);
+            download.getListener().completed(download.getUrl(), path);
         }
     }
 
+    private void setDownloaders() {
+
+        downloaders = Util.getDownloaders();
+    }
+
+    private DownloadFile getDownloader(String url) {
+
+        DownloadFile downloader = null;
+
+        String fileExtension = Util.getTypeFile(url);
+        if (Util.isAudio(fileExtension)) {
+            downloader = downloaders[1];
+        } else if (Util.isImage(fileExtension)) {
+            downloader = downloaders[0];
+        } else if (Util.isVideo(fileExtension)) {
+            downloader = downloaders[2];
+        } else {
+            throw new IllegalArgumentException("not mapped extension file");
+        }
+
+        return downloader;
+    }
 }

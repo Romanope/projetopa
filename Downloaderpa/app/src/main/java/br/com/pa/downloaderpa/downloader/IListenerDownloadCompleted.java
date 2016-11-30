@@ -5,5 +5,5 @@ package br.com.pa.downloaderpa.downloader;
  */
 public interface IListenerDownloadCompleted {
 
-    public void completed(String path);
+    public void completed(String url, String path);
 }
