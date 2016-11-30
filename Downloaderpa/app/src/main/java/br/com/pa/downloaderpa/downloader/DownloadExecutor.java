@@ -18,9 +18,9 @@ public class DownloadExecutor implements Runnable {
 
     private boolean deadThread;
 
-    private IObserverDownload observerDownload;
-
     private String mNameRunnable;
+
+    private static DownloadFile[] downloaders;
 
     @Override
     public void run() {
@@ -33,24 +33,28 @@ public class DownloadExecutor implements Runnable {
                     Downloaderpa.getInstance().setCacheUpdated(true);
                 }
 
+                if (downloaders == null) {
+                    setDownloaders();
+                }
+
+                //Verify if exists in cache
                 String path = consultarPath(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), download.getContext());
                 if (Util.isNullOrEmpty(path)) {
+                    //case not found in cache, search in the file system
                     path = Util.toSearchFile(download.getUrl());
                     if (Util.isNullOrEmpty(path)) {
-                        path = Util.downloader(download.getUrl());
+                        //Case not found in file system, execute the download
+                        path = this.getDownloader(download.getUrl()).downloader(download.getUrl());
                     }
+
+                    //Caches the file reference
                     if (!Util.isNullOrEmpty(path)) {
                         CacheUtil.addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path, download.getContext());
                     }
                 }
 
-                Intent i = new Intent(Constantes.DOWNLOAD_COMPLETED);
-                i.putExtra(Constantes.EXTRA_PATH_FILE, path);
-                download.getContext().sendBroadcast(i);
+                downloadCompleted(path);
 
-                if (Util.isImage(Util.getTypeFile(download.getUrl()))) {
-                    observerDownload.downloadFinish(download, path);
-                }
                 LogWapper.i(mNameRunnable + " performed the download  " + download.getUrl());
             }
         }
@@ -64,14 +68,6 @@ public class DownloadExecutor implements Runnable {
     public void setDeadThread(boolean deadThread) {
 
         this.deadThread = deadThread;
-    }
-
-    protected IObserverDownload getObserverDownload() {
-        return observerDownload;
-    }
-
-    protected void setObserverDownload(IObserverDownload observerDownload) {
-        this.observerDownload = observerDownload;
     }
 
     //Verifica se o arquivo está em cache
@@ -89,4 +85,41 @@ public class DownloadExecutor implements Runnable {
         this.mNameRunnable = name;
     }
 
+    private void downloadCompleted(String path) {
+
+        Intent i = new Intent(Constantes.DOWNLOAD_COMPLETED);
+        i.putExtra(Constantes.EXTRA_PATH_FILE, path);
+        download.getContext().sendBroadcast(i);
+
+        if (Util.isImage(Util.getTypeFile(download.getUrl()))) {
+            Downloaderpa.getInstance().refreshingView(download, path);
+        }
+
+        if (download.getListener() != null) {
+            download.getListener().completed(download.getUrl(), path);
+        }
+    }
+
+    private void setDownloaders() {
+
+        downloaders = Util.getDownloaders();
+    }
+
+    private DownloadFile getDownloader(String url) {
+
+        DownloadFile downloader = null;
+
+        String fileExtension = Util.getTypeFile(url);
+        if (Util.isAudio(fileExtension)) {
+            downloader = downloaders[1];
+        } else if (Util.isImage(fileExtension)) {
+            downloader = downloaders[0];
+        } else if (Util.isVideo(fileExtension)) {
+            downloader = downloaders[2];
+        } else {
+            throw new IllegalArgumentException("not mapped extension file");
+        }
+
+        return downloader;
+    }
 }

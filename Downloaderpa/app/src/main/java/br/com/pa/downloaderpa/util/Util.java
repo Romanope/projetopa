@@ -28,6 +28,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import br.com.pa.downloaderpa.downloader.AudioDirectory;
+import br.com.pa.downloaderpa.downloader.DownloadFile;
+import br.com.pa.downloaderpa.downloader.PictureDirectory;
+import br.com.pa.downloaderpa.downloader.VideoDirectory;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;
 
@@ -280,5 +284,16 @@ public class Util {
         }
 
         return null;
+    }
+
+    public static DownloadFile[] getDownloaders() {
+
+        DownloadFile[] downloadFiles = new DownloadFile[3];
+
+        downloadFiles[0] = new PictureDirectory();
+        downloadFiles[1] = new AudioDirectory();
+        downloadFiles[2] = new VideoDirectory();
+
+        return downloadFiles;
     }
 }
