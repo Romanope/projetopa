@@ -3,6 +3,7 @@ package br.com.pa.downloaderpa.downloader;
 import android.content.Context;
 import android.content.Intent;
 
+import br.com.pa.downloaderpa.cache.CacheUtil;
 import br.com.pa.downloaderpa.cache.DataBaseManager;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;
@@ -27,14 +28,19 @@ public class DownloadExecutor implements Runnable {
         while (!deadThread) {
             download = Downloaderpa.getInstance().getDownload();
             if (download != null) {
+                if (!Downloaderpa.getInstance().isCacheUpdated()) {
+                    CacheUtil.updateCache(download.getContext());
+                    Downloaderpa.getInstance().setCacheUpdated(true);
+                }
 
-                String path = "";
-
-                path = consultarPath(Util.getNameFile(download.getUrl()), download.getContext());
-                if (path == null || path.trim().length() == 0) {
-                    path = Util.downloader(download.getUrl());
-                    if (path != null) {
-                        addCache(Util.getNameFile(download.getUrl()), path, download.getContext());
+                String path = consultarPath(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), download.getContext());
+                if (Util.isNullOrEmpty(path)) {
+                    path = Util.toSearchFile(download.getUrl());
+                    if (Util.isNullOrEmpty(path)) {
+                        path = Util.downloader(download.getUrl());
+                    }
+                    if (!Util.isNullOrEmpty(path)) {
+                        CacheUtil.addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path, download.getContext());
                     }
                 }
 
@@ -45,7 +51,7 @@ public class DownloadExecutor implements Runnable {
                 if (Util.isImage(Util.getTypeFile(download.getUrl()))) {
                     observerDownload.downloadFinish(download, path);
                 }
-                LogWapper.i(mNameRunnable + " executou o download " + download.getUrl());
+                LogWapper.i(mNameRunnable + " performed the download  " + download.getUrl());
             }
         }
     }
@@ -78,13 +84,9 @@ public class DownloadExecutor implements Runnable {
         return retorno;
     }
 
-    //Adiciona referência do arquivo em cache.
-    private void addCache(String midiaName, String midiaPath, Context context) {
-        DataBaseManager manager = new DataBaseManager(context);
-        manager.addCache(midiaName, midiaPath);
-    }
-
     public void setNameRunnable(String name) {
+
         this.mNameRunnable = name;
     }
+
 }

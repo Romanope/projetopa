@@ -34,7 +34,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
            .append(CD_CACHE + " Integer primary key autoincrement, ")
            .append(MIDIA_NAME + " text, ")
            .append(MIDIA_PATH + " text ) ");
-
+        
         sqLiteDatabase.execSQL(sql.toString());
     }
 

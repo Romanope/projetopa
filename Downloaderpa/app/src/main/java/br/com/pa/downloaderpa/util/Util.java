@@ -101,7 +101,7 @@ public class Util {
         } else if (isVideo(fileExtension)) {
             return Constantes.VIDEO_DIRECTORY;
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("not mapped extension file");
         }
     }
 
@@ -256,5 +256,29 @@ public class Util {
             retorno = true;
 
         return retorno;
+    }
+
+    /**
+     * Method responsible for to search file in FileSystem.
+     * @param url
+     * @return path of file, case exists.
+     */
+    public static String toSearchFile(String url) {
+
+        String directory = Environment.getExternalStorageDirectory() + "/" + Util.getDirectory(url);
+        File file = new File(directory);
+        String fileName = Util.getNameFile(url);
+        if (file.exists()) {
+            String[] names = file.list();
+            if (names != null) {
+                for (int i = 0; i < names.length; i++) {
+                    if (names[i].equalsIgnoreCase(fileName)) {
+                        return directory + "/" + fileName;
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 }
