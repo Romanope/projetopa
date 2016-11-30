@@ -1,6 +1,7 @@
 package br.com.pa.downloaderpa.downloader;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
 import android.widget.ImageView;
@@ -23,6 +24,7 @@ public class Downloaderpa {
     private int mDownloadSequence = 0;
     private boolean mDisponivel;
     private static Context mContext;
+    private boolean cacheUpdated;
 
     private static Downloaderpa downloaderpa;
 
@@ -162,4 +164,12 @@ public class Downloaderpa {
         }
         }
     };
+
+    public boolean isCacheUpdated() {
+        return cacheUpdated;
+    }
+
+    public void setCacheUpdated(boolean cacheUpdated) {
+        this.cacheUpdated = cacheUpdated;
+    }
 }
