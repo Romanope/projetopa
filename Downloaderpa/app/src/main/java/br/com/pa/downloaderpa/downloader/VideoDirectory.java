@@ -1,7 +1,5 @@
 package br.com.pa.downloaderpa.downloader;
 
-import android.os.Environment;
-
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.Util;
 

@@ -1,20 +1,9 @@
 package br.com.pa.downloaderpa.util;
 
-import android.app.DownloadManager;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v7.app.AppCompatActivity;
 import android.webkit.MimeTypeMap;
 import android.webkit.URLUtil;
-import android.widget.ImageView;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -24,16 +13,12 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import br.com.pa.downloaderpa.downloader.AudioDirectory;
 import br.com.pa.downloaderpa.downloader.DownloadFile;
 import br.com.pa.downloaderpa.downloader.PictureDirectory;
 import br.com.pa.downloaderpa.downloader.VideoDirectory;
-import br.com.pa.downloaderpa.util.Constantes;
-import br.com.pa.downloaderpa.util.LogWapper;
 
 /**
  * Created by Romano on 20/11/2016.

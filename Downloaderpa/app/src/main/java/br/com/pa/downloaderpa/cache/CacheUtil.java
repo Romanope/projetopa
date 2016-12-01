@@ -1,11 +1,8 @@
 package br.com.pa.downloaderpa.cache;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.Environment;
-
 import java.io.File;
-
 import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;

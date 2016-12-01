@@ -17,7 +17,7 @@ import br.com.pa.downloaderpa.util.Util;
  */
 public class Downloaderpa {
 
-    private ArrayList<Download> mDownloadsPendentes = new ArrayList<Download>();
+    private ArrayList<DownloadFactory.Download> mDownloadsPendentes = new ArrayList<DownloadFactory.Download>();
     private boolean mPoolStarted;
     private Map<Integer, ImageView> mViews = new HashMap<Integer, ImageView>();
     private int mDownloadSequence = 0;
@@ -49,11 +49,7 @@ public class Downloaderpa {
             }
         }
 
-        Download download = new Download(url, imageView, mContext);
-        if (listener != null) {
-            download.setListener(listener);
-        }
-        download.setId(mDownloadSequence++);
+        DownloadFactory.Download download = DownloadFactory.getInstance().getDownload(url, imageView, listener, mContext);
         mDownloadsPendentes.add(download);
 
         if (imageView != null) {
@@ -81,9 +77,9 @@ public class Downloaderpa {
         }
     }
 
-    public synchronized Download getDownload() {
+    public synchronized DownloadFactory.Download getDownload() {
 
-        Download download = null;
+        DownloadFactory.Download download = null;
         while (!mDisponivel) {
             try {
                 wait();
@@ -141,32 +137,7 @@ public class Downloaderpa {
         return downloaderpa;
     }
 
-//    private IListenerDownloadCompleted observerDownload = new IListenerDownloadCompleted() {
-//        @Override
-//        public void downloadFinish(final Download download, final String path) {
-//
-//        final ImageView v = mViews.get(download.getId());
-//        if (v != null) {
-//            Thread thread = new Thread() {
-//                @Override
-//                public void run() {
-//
-//                    Activity a = (Activity) download.getContext();
-//                    a.runOnUiThread(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            v.setImageURI(Uri.parse(path));
-//                        }
-//                    });
-//                }
-//            };
-//            thread.start();
-//            mViews.remove(download.getUrl());
-//        }
-//        }
-//    };
-
-    protected void refreshingView(final Download download, final String path) {
+    protected void refreshingView(final DownloadFactory.Download download, final String path) {
 
         final ImageView v = mViews.get(download.getId());
         if (v != null) {
