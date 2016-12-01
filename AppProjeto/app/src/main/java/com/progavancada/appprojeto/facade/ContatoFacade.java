@@ -20,9 +20,6 @@ public class ContatoFacade implements IContatoDAO {
         contatoDAO = new ContatoDAO(context);
     }
 
-    public ContatoFacade() { }
-
-
     @Override
     public void insere(Contato contato) {
         contatoDAO.insere(contato);
