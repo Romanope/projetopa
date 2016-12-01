@@ -13,6 +13,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.Util;
 
 /**
  * Created by Romano on 29/11/2016.
@@ -36,7 +37,11 @@ public abstract class DownloadFile {
             connection.setRequestMethod("GET");
             connection.connect();
 
-            File directory = new File(Environment.getExternalStorageDirectory(), getDirectory(url));
+            String subDir = getDirectory(url);
+            if (Util.isNullOrEmpty(subDir)) {
+                throw new NullPointerException("sub directory not found");
+            }
+            File directory = new File(Environment.getExternalStorageDirectory(), subDir);
             if (!directory.exists()) {
                 directory.mkdir();
             }

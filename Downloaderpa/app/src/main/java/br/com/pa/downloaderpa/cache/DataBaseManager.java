@@ -55,7 +55,7 @@ public class DataBaseManager extends SQLiteOpenHelper {
         writable.insert(CACHE_TABLE, null, container);
     }
 
-    public String consultarPathMidia(String midiaName) {
+    public String searchFileDirectory(String midiaName) {
 
         String retorno = "";
 
