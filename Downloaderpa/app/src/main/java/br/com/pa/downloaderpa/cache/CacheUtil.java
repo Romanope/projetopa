@@ -6,13 +6,14 @@ import android.os.Environment;
 
 import java.io.File;
 
+import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;
 
 /**
  * Created by Romano on 28/11/2016.
  */
-public final class CacheUtil extends Application {
+public final class CacheUtil {
 
 
     private static final int NUMBER_OF_FILES_TYPE = 3;
@@ -24,14 +25,15 @@ public final class CacheUtil extends Application {
      */
     public static void updateCache(Context context) {
 
-        new DataBaseManager(context).remove(null);
+        CacheFacade.getInstance(context).removeOfCache(null);
 
         for (int i = 1; i <= NUMBER_OF_FILES_TYPE; i++) {
             String[] files = getFileNamesOfFileSystem(i);
             if (files != null && files.length > 0) {
                 for (int j = 0; j < files.length; j++) {
                     String hash = generateHash(files[j]);
-                    addCache(hash, currentPathFile + "/" + files[j], context);
+                    CacheFacade.getInstance(context).addCache(hash, currentPathFile + "/" + files[j]);
+
                 }
             }
         }
@@ -87,8 +89,8 @@ public final class CacheUtil extends Application {
      * @param midiaPath
      * @param context
      */
-    public static void addCache(String midiaName, String midiaPath, Context context) {
-        DataBaseManager manager = new DataBaseManager(context);
-        manager.addCache(midiaName, midiaPath);
-    }
+//    public static void addCache(String midiaName, String midiaPath, Context context) {
+//        DataBaseManager manager = new DataBaseManager(context);
+//        manager.addCache(midiaName, midiaPath);
+//    }
 }

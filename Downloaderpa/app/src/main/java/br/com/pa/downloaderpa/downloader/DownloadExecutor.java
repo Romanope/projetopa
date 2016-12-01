@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import br.com.pa.downloaderpa.cache.CacheUtil;
 import br.com.pa.downloaderpa.cache.DataBaseManager;
+import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;
 import br.com.pa.downloaderpa.util.Util;
@@ -38,7 +39,7 @@ public class DownloadExecutor implements Runnable {
                 }
 
                 //Verify if exists in cache
-                String path = consultarPath(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), download.getContext());
+                String path = CacheFacade.getInstance(download.getContext()).searchFileDirectory(CacheUtil.generateHash(Util.getNameFile(download.getUrl())));
                 if (Util.isNullOrEmpty(path)) {
                     //case not found in cache, search in the file system
                     path = Util.toSearchFile(download.getUrl());
@@ -49,7 +50,7 @@ public class DownloadExecutor implements Runnable {
 
                     //Caches the file reference
                     if (!Util.isNullOrEmpty(path)) {
-                        CacheUtil.addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path, download.getContext());
+                        CacheFacade.getInstance(download.getContext()).addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path);
                     }
                 }
 
@@ -68,16 +69,6 @@ public class DownloadExecutor implements Runnable {
     public void setDeadThread(boolean deadThread) {
 
         this.deadThread = deadThread;
-    }
-
-    //Verifica se o arquivo está em cache
-    private String consultarPath(String midiaName, Context context) {
-        String retorno = "";
-        if (midiaName != null) {
-            DataBaseManager manager = new DataBaseManager(context);
-            retorno = manager.consultarPathMidia(midiaName);
-        }
-        return retorno;
     }
 
     public void setNameRunnable(String name) {
