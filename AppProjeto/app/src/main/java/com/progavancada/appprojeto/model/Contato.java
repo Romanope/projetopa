@@ -50,9 +50,4 @@ public class Contato {
     public void setUrlFoto(String urlFoto) {
         this.urlFoto = urlFoto;
     }
-
-    @Override
-    public String toString() {
-        return this.urlFoto;
-    }
 }
