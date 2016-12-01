@@ -7,7 +7,7 @@ import android.util.Log;
  */
 public class LogWapper {
 
-    private LogWapper() {
+    private LogWapper() { // LogWrapper******
 
     }
 
