@@ -12,4 +12,5 @@
     <string name="carregar">Preview</string>
     <string name="ou">ou</string>
     <string name="title_activity_baixar_musicas">BaixarMusicas</string>
+    <string name="title_activity_cadastro_musica">CadastroMusicaActivity</string>
 </resources>

@@ -14,21 +14,21 @@ import br.com.pa.downloaderpa.Util;
 
 public class ImageUtil {
 
-    public static void carregarImagem(Context c, String url, int alt, int larg, ImageView i) {
+    public static void carregarImagem(Context c, String url, ImageView i) {
         if (url != null) {
             try {
                 Util u = new Util();
                 u.downloader(url, i, c);
-//                Picasso.with(c)
-//                        .load(url)
-//                        .resize(alt, larg)
-//                        .into(i);
                 i.setBackgroundResource(0);
             } catch (IllegalArgumentException e) {
                 throw new IllegalArgumentException(e.getMessage());
             }
 
         }
+    }
+
+    public static void carregarMusica() {
+
     }
 
 }

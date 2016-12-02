@@ -37,6 +37,10 @@
         <activity
             android:name=".BaixarMusicas"
             android:label="@string/title_activity_baixar_musicas"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".util.CadastroMusicaActivity"
+            android:label="@string/title_activity_cadastro_musica"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
