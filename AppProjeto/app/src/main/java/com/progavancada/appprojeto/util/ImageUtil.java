@@ -24,7 +24,7 @@ public class ImageUtil {
 
                 if (url.startsWith("http")) {
 
-                    Downloaderpa.context(c).download(url, imageView, null);
+                    Downloaderpa.context(c).setImageView(imageView).url(url).startDownload();
 
                 } else {
                     Bitmap bitmap = BitmapFactory.decodeFile(url);
