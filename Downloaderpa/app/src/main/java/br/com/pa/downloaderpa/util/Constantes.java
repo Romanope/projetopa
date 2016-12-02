@@ -21,4 +21,10 @@ public final class Constantes {
     public static final int      AUDIO_TYPE = 1;
     public static final int      VIDEO_TYPE = 2;
     public static final int      IMAGE_TYPE = 3;
+    public static final String   IMAGE_VIEW = "IMAGE_VIEW";
+    public static final String   HEIGHT = "HEIGHT";
+    public static final String   WIDTH = "WIDTH";
+    public static final String   URL = "URL";
+    public static final String   CONTEXT = "CONTEXT";
+    public static final String   LISTENERS = "LISTENER";
 }
