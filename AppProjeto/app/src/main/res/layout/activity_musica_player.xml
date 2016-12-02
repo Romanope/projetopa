@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_musica_player"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.progavancada.appprojeto.MusicaPlayerActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:id="@+id/btn_play"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="110dp"
+        android:text="@string/play" />
+
+    <Button
+        android:text="@string/stop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_stop"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:text="@string/pause"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_pause"
+        android:layout_marginRight="110dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:text="Nome do música"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btn_play"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:id="@+id/txt_nome" />
+
+    <TextView
+        android:text="Nome do música"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_nome"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp"
+        android:textSize="20sp"
+        android:id="@+id/txt_autor" />
+</RelativeLayout>
