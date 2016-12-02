@@ -3,9 +3,12 @@ package br.com.pa.downloaderpa.cache;
 import android.content.Context;
 import android.os.Environment;
 import java.io.File;
+
+import br.com.pa.downloaderpa.downloader.Download;
 import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
 import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.Util;
 
 /**
  * Created by Romano on 28/11/2016.
@@ -80,14 +83,14 @@ public final class CacheUtil {
         return null;
     }
 
-    /**
-     * Method responsible for add reference of the file downloaded
-     * @param midiaName
-     * @param midiaPath
-     * @param context
-     */
-//    public static void addCache(String midiaName, String midiaPath, Context context) {
-//        DataBaseManager manager = new DataBaseManager(context);
-//        manager.addCache(midiaName, midiaPath);
-//    }
+    public static String getFileDirectory(Download download) {
+
+        String path = CacheFacade.getInstance(download.getContext()).searchFileDirectory(CacheUtil.generateHash(Util.getNameFile(download.getUrl())));
+        if (Util.isNullOrEmpty(path)) {
+            //case not found in cache, search in the file system
+            path = Util.toSearchFile(download.getUrl());
+        }
+
+        return path;
+    }
 }

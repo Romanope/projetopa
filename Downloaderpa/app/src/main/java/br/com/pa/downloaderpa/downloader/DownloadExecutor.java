@@ -36,20 +36,15 @@ public class DownloadExecutor implements Runnable {
                     setDownloaders();
                 }
 
-                //Verify if exists in cache
-                String path = CacheFacade.getInstance(download.getContext()).searchFileDirectory(CacheUtil.generateHash(Util.getNameFile(download.getUrl())));
+                //Verify if exists in cache or in system file
+                String path = CacheUtil.getFileDirectory(download);
                 if (Util.isNullOrEmpty(path)) {
-                    //case not found in cache, search in the file system
-                    path = Util.toSearchFile(download.getUrl());
-                    if (Util.isNullOrEmpty(path)) {
-                        //Case not found in file system, execute the download
-                        path = this.getDownloader(download.getUrl()).downloader(download.getUrl());
-                    }
+                    path = this.getDownloader(download.getUrl()).downloader(download.getUrl());
+                }
 
-                    //Caches the file reference
-                    if (!Util.isNullOrEmpty(path)) {
-                        CacheFacade.getInstance(download.getContext()).addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path);
-                    }
+                //Caches the file reference
+                if (!Util.isNullOrEmpty(path)) {
+                    CacheFacade.getInstance(download.getContext()).addCache(CacheUtil.generateHash(Util.getNameFile(download.getUrl())), path);
                 }
 
                 downloadCompleted(path);

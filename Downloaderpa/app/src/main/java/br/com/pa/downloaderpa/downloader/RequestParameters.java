@@ -25,7 +25,7 @@ public class RequestParameters {
         this.putAttribute(Constantes.LISTENERS, listeners);
     }
 
-    public Map<String, Object> getAttributes() {
+    protected Map<String, Object> getAttributes() {
         return attributes;
     }
 
@@ -55,7 +55,7 @@ public class RequestParameters {
         return this;
     }
 
-    public RequestParameters setContext(Context context) {
+    protected RequestParameters setContext(Context context) {
 
         if (context == null) {
             throw new NullPointerException("context equals null");
