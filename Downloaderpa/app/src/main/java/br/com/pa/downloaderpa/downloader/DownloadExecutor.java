@@ -13,7 +13,7 @@ import br.com.pa.downloaderpa.util.Util;
  */
 public class DownloadExecutor implements Runnable {
 
-    private DownloadFactory.Download download;
+    private Download download;
 
     private boolean deadThread;
 
@@ -84,8 +84,10 @@ public class DownloadExecutor implements Runnable {
             Downloaderpa.getInstance().refreshingView(download, path);
         }
 
-        if (download.getListener() != null) {
-            download.getListener().completed(download.getUrl(), path);
+        if (download.getListeners() != null) {
+            for (DownloadCompletedListener listener: download.getListeners()) {
+                listener.completed(download.getUrl(), path);
+            }
         }
     }
 
