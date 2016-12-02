@@ -43,7 +43,7 @@ public abstract class DownloadFile {
             }
             File directory = new File(Environment.getExternalStorageDirectory(), subDir);
             if (!directory.exists()) {
-                directory.mkdir();
+                directory.mkdirs();
             }
 
             String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));
