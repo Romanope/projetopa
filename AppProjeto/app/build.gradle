@@ -5,11 +5,8 @@ android {
     buildToolsVersion "24.0.3"
     defaultConfig {
         applicationId "com.progavancada.appprojeto"
-<<<<<<< HEAD
         minSdkVersion 22
         targetSdkVersion 22
-=======
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

@@ -17,17 +17,6 @@ import br.com.pa.downloaderpa.util.Util;
  */
 public class Downloaderpa {
 
-<<<<<<< HEAD
-    private ArrayList<DownloadFactory.Download> mDownloadsPendentes = new ArrayList<DownloadFactory.Download>();
-    private boolean mPoolStarted;
-    private Map<Integer, ImageView> mViews = new HashMap<Integer, ImageView>();
-    private int mDownloadSequence = 0;
-    private boolean mDisponivel;
-    private static Context mContext;
-    private boolean cacheUpdated;
-
-    private static Downloaderpa downloaderpa;
-=======
     private ArrayList<Download> mDownloadsPendentes = new ArrayList<Download>();
     private boolean mPoolStarted;
     private boolean mDisponivel;
@@ -36,26 +25,14 @@ public class Downloaderpa {
 
 
     private static Downloaderpa mDownloaderpa;
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
 
     private Downloaderpa() {
 
     }
 
-<<<<<<< HEAD
-    /**
-     * Adiciona à fila um novo download
-     * @param url
-     * @param imageView
-     */
-    public synchronized void download(String url, ImageView imageView, IListenerDownloadCompleted listener) {
-
-        validateUrl(url);
-=======
     /**    * Adiciona à fila um novo download
      */
     protected synchronized void download(Download download) {
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
 
         while (mDisponivel) {
             try {
@@ -66,18 +43,8 @@ public class Downloaderpa {
             }
         }
 
-<<<<<<< HEAD
-        DownloadFactory.Download download = DownloadFactory.getInstance().getDownload(url, imageView, listener, mContext);
         mDownloadsPendentes.add(download);
 
-        if (imageView != null) {
-            mViews.put(download.getId(), imageView);
-        }
-
-=======
-        mDownloadsPendentes.add(download);
-
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
         if (!mPoolStarted) {
             startPoolThreads();
         }
@@ -99,15 +66,9 @@ public class Downloaderpa {
         }
     }
 
-<<<<<<< HEAD
-    public synchronized DownloadFactory.Download getDownload() {
-
-        DownloadFactory.Download download = null;
-=======
     public synchronized Download getDownload() {
 
         Download download = null;
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
         while (!mDisponivel) {
             try {
                 wait();
@@ -125,33 +86,11 @@ public class Downloaderpa {
     }
 
     protected static Downloaderpa getInstance() {
-<<<<<<< HEAD
-        if (downloaderpa == null) {
-            downloaderpa = new Downloaderpa();
-        }
-
-        return downloaderpa;
-    }
-
-    private void validateUrl(String url) {
-
-        if (url == null) {
-            throw new NullPointerException("The url argument can not be null");
-        }
-        if (url.trim().length() == 0) {
-            throw new IllegalArgumentException("url is required");
-        }
-
-        if (!Util.urlIsValid(url)) {
-            throw new IllegalArgumentException("Url is not valid");
-        }
-=======
         if (mDownloaderpa == null) {
             mDownloaderpa = new Downloaderpa();
         }
 
         return mDownloaderpa;
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
     }
 
     /**
@@ -159,30 +98,12 @@ public class Downloaderpa {
      * @param c
      * @return instancia do downloadManager
      */
-<<<<<<< HEAD
-    public static Downloaderpa context(Context c) {
-=======
     public static RequestParameters context(Context c) {
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
 
         if (c == null) {
             throw new IllegalArgumentException("Context is required");
         }
 
-<<<<<<< HEAD
-        if (downloaderpa == null) {
-            downloaderpa = new Downloaderpa();
-        }
-        mContext = c;
-
-        return downloaderpa;
-    }
-
-    protected void refreshingView(final DownloadFactory.Download download, final String path) {
-
-        final ImageView v = mViews.get(download.getId());
-        if (v != null) {
-=======
         if (mDownloaderpa == null) {
             mDownloaderpa = new Downloaderpa();
         }
@@ -196,7 +117,6 @@ public class Downloaderpa {
     protected void refreshingView(final Download download, final String path) {
 
         if (download.getImageView() != null) {
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
             Thread thread = new Thread() {
                 @Override
                 public void run() {
@@ -205,36 +125,20 @@ public class Downloaderpa {
                     a.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-<<<<<<< HEAD
-                            v.setImageURI(Uri.parse(path));
-=======
                             download.getImageView().setImageURI(Uri.parse(path));
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
                         }
                     });
                 }
             };
             thread.start();
-<<<<<<< HEAD
-            mViews.remove(download.getUrl());
-=======
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
         }
     }
 
     public boolean isCacheUpdated() {
-<<<<<<< HEAD
-        return cacheUpdated;
-    }
-
-    public void setCacheUpdated(boolean cacheUpdated) {
-        this.cacheUpdated = cacheUpdated;
-=======
         return mCacheUpdated;
     }
 
     public void setCacheUpdated(boolean cacheUpdated) {
         this.mCacheUpdated = cacheUpdated;
->>>>>>> 8a4ee645493e56a93bd34df5a69fc661aaa63565
     }
 }
