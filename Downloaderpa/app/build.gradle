@@ -37,3 +37,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:24.2.1'
 }
+
+task makeJar(type: Copy) {
+    from('build/intermediates/bundles/release/')
+    into('build/outputs/')
+    include('classes.jar')
+    rename ('classes.jar', 'LibDownloaderpa.jar')
+    into('release/') //you can change this directory where you want to copy your .jar
+}
+task clearJar(type: Delete) {
+    delete 'build/libs/LibDownloaderpa.jar'
+}
+

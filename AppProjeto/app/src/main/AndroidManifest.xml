@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
@@ -37,7 +38,12 @@
         <activity
             android:name=".BaixarMusicas"
             android:label="@string/title_activity_baixar_musicas"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".CadastroMusicaActivity"
+            android:label="@string/title_activity_cadastro_musica"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MusicaPlayerActivity"></activity>
     </application>
 
 </manifest>

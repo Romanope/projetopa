@@ -75,7 +75,7 @@ public class ContatosAdapter extends BaseAdapter {
         holder.emailContato.setText(contato.getEmail());
 
         try{
-            ImageUtil.carregarImagem(mContext, contato.getUrlFoto(), 64, 64, holder.imagemContato);
+            ImageUtil.carregarImagem(mContext, contato.getUrlFoto(), holder.imagemContato);
         } catch (IllegalArgumentException e) {
             //Log.e("LOG", e.getMessage());
         }
