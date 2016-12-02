@@ -17,8 +17,8 @@ import java.util.List;
 
 public class ContatoDAO extends SQLiteOpenHelper implements IContatoDAO {
 
-    private final String DATA_BASE_NAME = "Contatos";
-    private final int DATA_BASE_VERSION = 2;
+    private final static String DATA_BASE_NAME = "Contatos";
+    private final static int DATA_BASE_VERSION = 2;
     
     public ContatoDAO(Context context) {
         super(context, DATA_BASE_NAME, null, DATA_BASE_VERSION);
