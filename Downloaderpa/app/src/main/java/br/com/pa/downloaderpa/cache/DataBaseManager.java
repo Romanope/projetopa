@@ -6,10 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.com.pa.downloaderpa.util.LogWrapper;
+
 /**
  * Created by Romano on 24/11/2016.
  */
-public class DataBaseManager extends SQLiteOpenHelper {
+public class DataBaseManager extends SQLiteOpenHelper implements RepositoryManager {
 
     private static final String NAME = "Downloaderpa";
 
@@ -22,6 +24,8 @@ public class DataBaseManager extends SQLiteOpenHelper {
     private static final String MIDIA_NAME = "MIDIA_NAME";
 
     private static final String MIDIA_PATH = "MIDIA_PATH";
+
+    private static boolean mDisponivel = true;
 
     public DataBaseManager(Context context) {
         super(context, NAME, null, VERSION);
@@ -44,8 +48,16 @@ public class DataBaseManager extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void addCache(String midiaName, String midiaPath) {
+    public synchronized void addCache(String midiaName, String midiaPath) {
 
+        if (!mDisponivel) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                LogWrapper.e(e.getMessage());
+            }
+        }
+        mDisponivel = false;
         validarDados(midiaName, midiaPath);
 
         SQLiteDatabase writable = getWritableDatabase();
@@ -53,10 +65,21 @@ public class DataBaseManager extends SQLiteOpenHelper {
         container.put(MIDIA_NAME, midiaName);
         container.put(MIDIA_PATH, midiaPath);
         writable.insert(CACHE_TABLE, null, container);
+        mDisponivel = true;
+        notifyAll();
+
     }
 
-    public String searchFileDirectory(String midiaName) {
+    public synchronized String searchFileDirectory(String midiaName) {
 
+        if (!mDisponivel) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                LogWrapper.e(e.getMessage());
+            }
+        }
+        mDisponivel = false;
         String retorno = "";
 
         String query = "select midia_path from cache where midia_name = '" + midiaName + "'";
@@ -68,14 +91,25 @@ public class DataBaseManager extends SQLiteOpenHelper {
         }
         result.close();
         readable.close();
-        this.close();
+        mDisponivel = true;
+        notifyAll();
         return retorno;
     }
 
-    public void remove(String midiaName) {
+    public synchronized void remove(String midiaName) {
 
+        if (!mDisponivel) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                LogWrapper.e(e.getMessage());
+            }
+        }
+        mDisponivel = false;
         SQLiteDatabase write = getWritableDatabase();
         write.delete(CACHE_TABLE, midiaName == null ? null : MIDIA_NAME + " = ?", midiaName == null ? null : new String[] {midiaName});
+        mDisponivel = true;
+        notifyAll();
     }
 
     private void validarDados(String name, String path) {

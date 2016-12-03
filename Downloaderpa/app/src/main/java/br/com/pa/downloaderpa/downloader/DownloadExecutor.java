@@ -5,7 +5,7 @@ import android.content.Intent;
 import br.com.pa.downloaderpa.cache.CacheUtil;
 import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
-import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.LogWrapper;
 import br.com.pa.downloaderpa.util.Util;
 
 /**
@@ -49,7 +49,7 @@ public class DownloadExecutor implements Runnable {
 
                 downloadCompleted(path);
 
-                LogWapper.i(mNameRunnable + " performed the download  " + download.getUrl());
+                LogWrapper.i(mNameRunnable + " performed the download  " + download.getUrl());
             }
         }
     }

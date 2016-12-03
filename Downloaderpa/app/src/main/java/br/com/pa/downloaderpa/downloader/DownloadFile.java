@@ -12,7 +12,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.LogWrapper;
 import br.com.pa.downloaderpa.util.Util;
 
 /**
@@ -43,6 +43,11 @@ public abstract class DownloadFile {
             }
             File directory = new File(Environment.getExternalStorageDirectory(), subDir);
             if (!directory.exists()) {
+                directory.mkdirs();
+            }
+
+            //some times the directory not is created using the method .mkdirs
+            if (!directory.exists()) {
                 directory.mkdir();
             }
 
@@ -67,9 +72,9 @@ public abstract class DownloadFile {
             return fileDownloaded.getPath();
 
         } catch (MalformedURLException e) {
-            LogWapper.e(e.getMessage());
+            LogWrapper.e(e.getMessage());
         } catch (IOException e) {
-            LogWapper.e(e.getMessage());
+            LogWrapper.e(e.getMessage());
         }
 
         return null;

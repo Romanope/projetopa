@@ -7,7 +7,7 @@ import java.io.File;
 import br.com.pa.downloaderpa.downloader.Download;
 import br.com.pa.downloaderpa.util.CacheFacade;
 import br.com.pa.downloaderpa.util.Constantes;
-import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.LogWrapper;
 import br.com.pa.downloaderpa.util.Util;
 
 /**
@@ -77,7 +77,7 @@ public final class CacheUtil {
             }
             return sb.toString();
         } catch (java.security.NoSuchAlgorithmException e) {
-            LogWapper.e(e.getMessage());
+            LogWrapper.e(e.getMessage());
         }
 
         return null;

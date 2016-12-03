@@ -66,9 +66,9 @@ public class Util {
             return fileDownloaded.getPath();
 
         } catch (MalformedURLException e) {
-            LogWapper.e(e.getMessage());
+            LogWrapper.e(e.getMessage());
         } catch (IOException e) {
-            LogWapper.e(e.getMessage());
+            LogWrapper.e(e.getMessage());
         }
 
         return null;
