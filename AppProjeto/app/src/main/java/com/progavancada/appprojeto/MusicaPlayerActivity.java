@@ -44,7 +44,7 @@ public class MusicaPlayerActivity extends AppCompatActivity {
         mHandler = new Handler();
 
         Intent intent = getIntent();
-        mMusica = (Musica) intent.getSerializableExtra("musica");
+        mMusica = (Musica) intent.getSerializableExtra(MusicasActivity.EXTRA_MUSICA);
 
         mBtnPlay = (Button) findViewById(R.id.btn_play);
         mBtnPause = (Button) findViewById(R.id.btn_pause);

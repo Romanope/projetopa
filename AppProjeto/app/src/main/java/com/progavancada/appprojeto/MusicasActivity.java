@@ -32,6 +32,8 @@ import br.com.pa.downloaderpa.util.Constantes;
 
 public class MusicasActivity extends AppCompatActivity {
 
+    public static final String EXTRA_MUSICA = "musica";
+
     private MusicasAdapter mMusicasAdapter;
     private List<Musica> mMusicas;
 
@@ -73,26 +75,22 @@ public class MusicasActivity extends AppCompatActivity {
     private List<Musica> carregarDiretorio() {
         List<Musica> musicas = new ArrayList<>();
         String path = Environment.getExternalStorageDirectory().toString() + "/" + Constantes.AUDIO_DIRECTORY;
-        Log.d("Files", "Path: " + path);
         File directory = new File(path);
 
         if (directory.listFiles() != null) {
             File[] files = directory.listFiles();
-            Log.d("Files", "Size: "+ files.length);
 
             for (int i = 0; i < files.length; i++) {
                 int tamMusicas = musicas.size();
 
                 Musica musica = new Musica();
 
-                Log.d("LOOOOG3", files[i].length() + "");
-
                 musica.setNome(files[i].getName());
                 musica.setUrlMusica(files[i].getAbsolutePath());
                 musica.setId(tamMusicas++);
                 musica.setAutor("ID: " + musica.getId());
                 musicas.add(musica);
-                Log.d("Files", "FileName:" + files[i].getName());
+
             }
         }
 
@@ -112,7 +110,7 @@ public class MusicasActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(MusicasActivity.this, MusicaPlayerActivity.class);
 
-                intent.putExtra("musica", musica);
+                intent.putExtra(EXTRA_MUSICA, musica);
                 startActivity(intent);
 
                 return false;
