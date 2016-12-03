@@ -22,6 +22,7 @@ import com.progavancada.appprojeto.adapter.MusicasAdapter;
 import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
 import com.progavancada.appprojeto.model.Musica;
+import com.progavancada.appprojeto.util.ImageUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -88,7 +89,6 @@ public class MusicasActivity extends AppCompatActivity {
                 musica.setNome(files[i].getName());
                 musica.setUrlMusica(files[i].getAbsolutePath());
                 musica.setId(tamMusicas++);
-                musica.setAutor("ID: " + musica.getId());
                 musicas.add(musica);
 
             }

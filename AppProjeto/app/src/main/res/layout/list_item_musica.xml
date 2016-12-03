@@ -28,10 +28,10 @@
             android:textStyle="bold"/>
 
         <TextView
-            android:id="@+id/txt_nome_autor"
+            android:id="@+id/txt_src"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Autor da musica"
+            android:text="SRC"
             android:textSize="17sp"/>
 
     </LinearLayout>
