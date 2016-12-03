@@ -1,10 +1,12 @@
 package com.progavancada.appprojeto.model;
 
+import java.io.Serializable;
+
 /**
  * Created by gabriel on 19/11/2016.
  */
 
-public class Musica {
+public class Musica implements Serializable {
 
     private long id;
     private String nome;

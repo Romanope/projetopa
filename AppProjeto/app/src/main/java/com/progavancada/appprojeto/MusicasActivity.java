@@ -79,11 +79,18 @@ public class MusicasActivity extends AppCompatActivity {
         if (directory.listFiles() != null) {
             File[] files = directory.listFiles();
             Log.d("Files", "Size: "+ files.length);
+
             for (int i = 0; i < files.length; i++) {
+                int tamMusicas = musicas.size();
+
                 Musica musica = new Musica();
+
+                Log.d("LOOOOG3", files[i].length() + "");
+
                 musica.setNome(files[i].getName());
                 musica.setUrlMusica(files[i].getAbsolutePath());
-                musica.setAutor("ND");
+                musica.setId(tamMusicas++);
+                musica.setAutor("ID: " + musica.getId());
                 musicas.add(musica);
                 Log.d("Files", "FileName:" + files[i].getName());
             }
@@ -103,6 +110,10 @@ public class MusicasActivity extends AppCompatActivity {
 
                 Musica musica = (Musica) mListMusicas.getItemAtPosition(info.position);
 
+                Intent intent = new Intent(MusicasActivity.this, MusicaPlayerActivity.class);
+
+                intent.putExtra("musica", musica);
+                startActivity(intent);
 
                 return false;
             }
