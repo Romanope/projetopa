@@ -43,8 +43,8 @@ public class ImageUtil {
         }
     }
 
-    public static void carregarMusica() {
-        // chama lib
+    public static void carregarMusica(Context context, String url) {
+        Downloaderpa.context(context).url(url).startDownload();
     }
 
 }

@@ -92,13 +92,4 @@ public class CadastroContatoActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == Utils.CODIGO_CAMERA && resultCode == Activity.RESULT_OK) {
-            Bitmap bitmap = BitmapFactory.decodeFile(mCaminhoFoto);
-            Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 64, 64, true);
-            mPreviewFoto.setImageBitmap(bitmapReduzido);
-            mPreviewFoto.setTag(mCaminhoFoto);
-        }
-    }
 }

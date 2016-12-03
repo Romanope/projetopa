@@ -5,10 +5,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +23,12 @@ import com.progavancada.appprojeto.facade.ContatoFacade;
 import com.progavancada.appprojeto.model.Contato;
 import com.progavancada.appprojeto.model.Musica;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import br.com.pa.downloaderpa.util.Constantes;
 
 public class MusicasActivity extends AppCompatActivity {
 
@@ -43,7 +48,7 @@ public class MusicasActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MusicasActivity.this, BaixarMusicas.class);
+                Intent intent = new Intent(MusicasActivity.this, CadastroMusicaActivity.class);
                 startActivity(intent);
             }
         });
@@ -58,12 +63,34 @@ public class MusicasActivity extends AppCompatActivity {
 
     private void setupListView() {
         mMusicas = new ArrayList<>();
-        criaUmasMusicas(20);
-
+        mMusicas = carregarDiretorio();
 
         mMusicasAdapter = new MusicasAdapter(this, mMusicas);
         mListMusicas.setAdapter(mMusicasAdapter);
 
+    }
+
+    private List<Musica> carregarDiretorio() {
+        List<Musica> musicas = new ArrayList<>();
+        String path = Environment.getExternalStorageDirectory().toString() + "/" + Constantes.AUDIO_DIRECTORY;
+        Log.d("Files", "Path: " + path);
+        File directory = new File(path);
+
+        if (directory.listFiles() != null) {
+            File[] files = directory.listFiles();
+            Log.d("Files", "Size: "+ files.length);
+            for (int i = 0; i < files.length; i++) {
+                Musica musica = new Musica();
+                musica.setNome(files[i].getName());
+                musica.setUrlMusica(files[i].getAbsolutePath());
+                musica.setAutor("ND");
+                musicas.add(musica);
+                Log.d("Files", "FileName:" + files[i].getName());
+            }
+        }
+
+
+        return musicas;
     }
 
     @Override
@@ -73,34 +100,13 @@ public class MusicasActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
-                // usa o MediaPlayer com o endereço da musica
 
                 Musica musica = (Musica) mListMusicas.getItemAtPosition(info.position);
 
-                try {
-                    Uri myUri = null; // initialize Uri here
-                    MediaPlayer mediaPlayer = new MediaPlayer();
-                    mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-                    mediaPlayer.setDataSource(getApplicationContext(), myUri);
-                    mediaPlayer.prepare();
-                    mediaPlayer.start();
-                } catch (IOException e) {
-                    // erro
-                }
 
                 return false;
             }
         });
-    }
-
-
-    private void criaUmasMusicas(int qnt) {
-        for (int i = 0; i < qnt; i++) {
-            Musica m = new Musica();
-            m.setNome("Musica No. " + i);
-            m.setAutor("Autor qualquer");
-            mMusicas.add(m);
-        }
     }
 
 }
