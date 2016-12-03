@@ -59,7 +59,10 @@ public class MusicaPlayerActivity extends AppCompatActivity {
         mMediaPlayer = MediaPlayer.create(MusicaPlayerActivity.this, mUriMusica);
 
         mProgressoMusica = (ProgressBar) findViewById(R.id.progressoMusica);
-        mProgressoMusica.setMax(mMediaPlayer.getDuration());
+
+        if (mMediaPlayer != null) {
+            mProgressoMusica.setMax(mMediaPlayer.getDuration());
+        }
 
         mBtnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
