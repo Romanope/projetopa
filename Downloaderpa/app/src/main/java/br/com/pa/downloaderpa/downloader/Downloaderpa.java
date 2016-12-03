@@ -3,13 +3,10 @@ package br.com.pa.downloaderpa.downloader;
 import android.app.Activity;
 import android.content.Context;
 import android.net.Uri;
-import android.widget.ImageView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
-import br.com.pa.downloaderpa.util.LogWapper;
+import br.com.pa.downloaderpa.util.LogWrapper;
 import br.com.pa.downloaderpa.util.Util;
 
 /**
@@ -22,7 +19,7 @@ public class Downloaderpa {
     private boolean mDisponivel;
     private boolean mCacheUpdated;
     private static RequestParameters requestParameters;
-
+    public static boolean useCacheInMemory = false;
 
     private static Downloaderpa mDownloaderpa;
 
@@ -38,7 +35,7 @@ public class Downloaderpa {
             try {
                 wait();
             } catch (InterruptedException e) {
-                LogWapper.e(e.getMessage());
+                LogWrapper.e(e.getMessage());
                 return;
             }
         }
@@ -73,7 +70,7 @@ public class Downloaderpa {
             try {
                 wait();
             } catch (InterruptedException e) {
-                LogWapper.e(e.getMessage());
+                LogWrapper.e(e.getMessage());
             }
         }
         if (mDownloadsPendentes.size() > 0) {
