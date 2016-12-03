@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.progavancada.appprojeto.R;
 import com.progavancada.appprojeto.util.ImageUtil;
@@ -30,8 +31,13 @@ public class CadastroMusicaActivity extends AppCompatActivity {
         btnAdicionarMusica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String musicaUrl = txtUrlMusica.getText().toString();
-                ImageUtil.carregarMusica(CadastroMusicaActivity.this, musicaUrl);
+                try {
+                    String musicaUrl = txtUrlMusica.getText().toString();
+                    ImageUtil.carregarMusica(CadastroMusicaActivity.this, musicaUrl);
+                } catch (IllegalArgumentException e) {
+                    Toast.makeText(CadastroMusicaActivity.this, "URL inserida inválida.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

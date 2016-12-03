@@ -78,7 +78,6 @@ public class ContatosActivity extends AppCompatActivity {
                 Contato contato = (Contato) mListContatos.getItemAtPosition(info.position);
                 ContatoFacade facade = new ContatoFacade(ContatosActivity.this);
                 facade.remove(contato);
-                facade.fecharConexao();
                 Toast.makeText(ContatosActivity.this, "Contato removido com sucesso", Toast.LENGTH_LONG).show();
                 setupListView();
                 return false;
