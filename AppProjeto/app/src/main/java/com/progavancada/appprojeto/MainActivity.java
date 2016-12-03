@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonMusicas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                iniciarActivity(MusicaPlayerActivity.class);
+                iniciarActivity(MusicasActivity.class);
             }
         });
 
