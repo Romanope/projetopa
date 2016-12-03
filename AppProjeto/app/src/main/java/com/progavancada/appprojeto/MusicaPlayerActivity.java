@@ -4,20 +4,15 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Handler;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.progavancada.appprojeto.model.Musica;
-
-import org.w3c.dom.Text;
 
 import java.io.File;
 
@@ -27,7 +22,7 @@ public class MusicaPlayerActivity extends AppCompatActivity {
     private Button mBtnPause;
     private Button mBtnStop;
     private TextView mTxtNomeMusica;
-    private TextView mTxtNomeAutor;
+    private TextView mSrc;
     private Musica mMusica;
     private ProgressBar mProgressoMusica;
 
@@ -50,10 +45,10 @@ public class MusicaPlayerActivity extends AppCompatActivity {
         mBtnPause = (Button) findViewById(R.id.btn_pause);
         mBtnStop = (Button) findViewById(R.id.btn_stop);
         mTxtNomeMusica = (TextView) findViewById(R.id.txt_nome_musica_player);
-        mTxtNomeAutor = (TextView) findViewById(R.id.txt_nome_autor_player);
+        mSrc = (TextView) findViewById(R.id.txt_nome_autor_player);
 
         mTxtNomeMusica.setText(mMusica.getNome());
-        mTxtNomeAutor.setText(mMusica.getAutor());
+        mSrc.setText(mMusica.getUrlMusica());
 
         mUriMusica = Uri.fromFile(new File(mMusica.getUrlMusica()));
         mMediaPlayer = MediaPlayer.create(MusicaPlayerActivity.this, mUriMusica);

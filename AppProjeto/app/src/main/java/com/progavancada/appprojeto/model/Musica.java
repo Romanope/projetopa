@@ -10,7 +10,6 @@ public class Musica implements Serializable {
 
     private long id;
     private String nome;
-    private String autor;
     private String urlMusica;
 
     public long getId() {
@@ -27,14 +26,6 @@ public class Musica implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getAutor() {
-        return autor;
-    }
-
-    public void setAutor(String autor) {
-        this.autor = autor;
     }
 
     public String getUrlMusica() {

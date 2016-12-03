@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.progavancada.appprojeto.R;
@@ -56,7 +55,7 @@ public class MusicasAdapter extends BaseAdapter {
             holder = new ViewHolder();
 
             holder.nomeMusica = (TextView) convertView.findViewById(R.id.txt_nome_musica);
-            holder.nomeAutor = (TextView) convertView.findViewById(R.id.txt_nome_autor);
+            holder.src = (TextView) convertView.findViewById(R.id.txt_src);
 
             convertView.setTag(holder);
 
@@ -65,14 +64,14 @@ public class MusicasAdapter extends BaseAdapter {
         }
 
         holder.nomeMusica.setText(musica.getNome());
-        holder.nomeAutor.setText(musica.getAutor());
+        holder.src.setText(musica.getUrlMusica());
 
         return convertView;
     }
 
     static class ViewHolder {
         TextView nomeMusica;
-        TextView nomeAutor;
+        TextView src;
     }
 
 }

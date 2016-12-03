@@ -1,21 +1,13 @@
 package com.progavancada.appprojeto.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import com.progavancada.appprojeto.R;
-import com.squareup.picasso.Picasso;
 
 import br.com.pa.downloaderpa.downloader.DownloadCompletedListener;
 import br.com.pa.downloaderpa.downloader.Downloaderpa;
-
-import static com.progavancada.appprojeto.R.id.imageView;
 
 /**
  * Created by gabriel on 22/11/2016.
