@@ -33,9 +33,8 @@ public class BaixarVideosActivity extends AppCompatActivity{
             public void onClick(View view) {
                 try {
                     Downloaderpa.context(BaixarVideosActivity.this).url(editText.getText().toString()).startDownload();
-                    Toast.makeText(BaixarVideosActivity.this, "Baixando", Toast.LENGTH_LONG).show();
                 }catch(IllegalArgumentException e){
-                    Toast.makeText(BaixarVideosActivity.this,"URL invalida", Toast.LENGTH_LONG).show();
+                    Toast.makeText(BaixarVideosActivity.this,"Url invalida", Toast.LENGTH_LONG).show();
                 }
             }
         });

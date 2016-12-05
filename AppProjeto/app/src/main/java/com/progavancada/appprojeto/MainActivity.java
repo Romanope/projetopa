@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.progavancada.appprojeto.Video.VideosActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private Button mButtonContatos;

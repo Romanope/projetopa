@@ -16,4 +16,6 @@
     <string name="play">Play</string>
     <string name="pause">Pause</string>
     <string name="stop">Stop</string>
+    <string name="title_activity_baixar_videos">BaixarVideos</string>
+    <string name="title_activity_video_player">VideoPlayer</string>
 </resources>

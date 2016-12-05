@@ -30,11 +30,20 @@
             android:name=".MusicasActivity"
             android:label="@string/title_activity_musicas"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".VideosActivity"
-            android:label="@string/title_activity_videos"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".CadastroContatoActivity" />
+        <activity
+            android:name=".Video.VideosActivity"
+            android:label="@string/title_activity_videos"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
+        <activity
+            android:name=".Video.BaixarVideosActivity"
+            android:label="@string/title_activity_baixar_videos"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Video.VideoPlayerActivity"
+            android:label="@string/title_activity_video_player"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".BaixarMusicas"
             android:label="@string/title_activity_baixar_musicas"
