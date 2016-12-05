@@ -49,7 +49,7 @@ public abstract class DownloadFile {
 
             //some times the directory not is created using the method .mkdirs
             if (!directory.exists()) {
-                directory.mkdir();
+                directory.mkdirs();
             }
 
             String fileName = URLUtil.guessFileName(url, null, MimeTypeMap.getFileExtensionFromUrl(url));

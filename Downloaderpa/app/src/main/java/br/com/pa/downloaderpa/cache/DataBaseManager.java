@@ -15,7 +15,7 @@ public class DataBaseManager extends SQLiteOpenHelper implements RepositoryManag
 
     private static final String NAME = "Downloaderpa";
 
-    private static final int VERSION = 1;
+    private static final int VERSION = 2;
 
     private static final String CACHE_TABLE = "CACHE";
 

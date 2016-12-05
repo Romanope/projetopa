@@ -64,6 +64,10 @@ public class CadastroContatoActivity extends AppCompatActivity {
 
                 Toast.makeText(CadastroContatoActivity.this, "Contato salvo!", Toast.LENGTH_LONG).show();
 
+                Intent intent = new Intent(CadastroContatoActivity.this, ContatosActivity.class);
+                startActivity(intent);
+
+
             }
         });
 

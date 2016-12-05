@@ -64,6 +64,12 @@ public class MusicasActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setupListView();
+    }
+
     private void setupListView() {
         mMusicas = new ArrayList<>();
         mMusicas = carregarDiretorio();

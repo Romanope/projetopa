@@ -21,13 +21,7 @@ public class ImageUtil {
 
                 if (url.startsWith("http") || url.startsWith("www.")) {
 
-                    Downloaderpa.context(c).setImageView(imageView).url(url)
-                            .registerListener(new DownloadCompletedListener() {
-                        @Override
-                        public void completed(String s, String s1) {
-                            // =========================
-                        }
-                    }).startDownload();
+                    Downloaderpa.context(c).setImageView(imageView).url(url).startDownload();
 
                 } else {
                     Bitmap bitmap = BitmapFactory.decodeFile(url);

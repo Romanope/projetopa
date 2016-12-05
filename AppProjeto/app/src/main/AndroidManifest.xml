@@ -44,6 +44,18 @@
             android:label="@string/title_activity_cadastro_musica"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MusicaPlayerActivity"></activity>
+
+        <activity
+            android:name=".Video.VideosActivity"
+            android:label="@string/title_activity_videos"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Video.BaixarVideosActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".Video.VideoPlayerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 
 </manifest>
