@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.progavancada.appprojeto.R;
-import com.progavancada.appprojeto.model.Video;
+import com.progavancada.appprojeto.Video.Video;
 
 import java.util.List;
 
